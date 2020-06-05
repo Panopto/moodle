@@ -218,6 +218,19 @@ function xmldb_lti_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2019031302, 'lti');
     }
 
+    // This adds the placement for rich text editors. This will let users make plugins for atto and tinyMCE that use LTI integrations. 
+    if ($oldversion < 2019111801) {
+        $table = new xmldb_table('lti_types');
+
+        $asrichtexteditorpluginfield = new xmldb_field('asrichtexteditorplugin', XMLDB_TYPE_INTEGER, 1, null, null, null, 0, 'secureicon');
+        $richtexteditorurlfield = new xmldb_field('richtexteditorurl', XMLDB_TYPE_TEXT, 255, null, false, null, null, 'asrichtexteditorplugin');
+
+        $dbman->add_field($table, $asrichtexteditorpluginfield);
+        $dbman->add_field($table, $richtexteditorurlfield);
+
+        upgrade_mod_savepoint(true, 2019111801, 'lti');
+    }
+
     // Automatically generated Moodle v3.7.0 release upgrade line.
     // Put any upgrade step following this.
 
